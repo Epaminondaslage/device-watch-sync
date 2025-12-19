@@ -1,0 +1,36 @@
+{
+    "name": "iot-mqtt/backend",
+    "description": "Backend PHP para Sistema IoT MQTT",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {},
+    "suggest": {
+        "php-mqtt/client": "Para comunicação real com broker MQTT (composer require php-mqtt/client)"
+    },
+    "autoload": {
+        "classmap": [
+            "config/",
+            "app/controllers/",
+            "app/models/",
+            "app/services/",
+            "app/middleware/"
+        ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
