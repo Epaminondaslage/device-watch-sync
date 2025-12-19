@@ -1,0 +1,43 @@
+# Arquivo de serviço systemd para o MQTT Listener
+# Sistema IoT MQTT
+#
+# Instalação:
+#   sudo cp iot-mqtt.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable iot-mqtt
+#   sudo systemctl start iot-mqtt
+#
+# Verificar status:
+#   sudo systemctl status iot-mqtt
+#
+# Ver logs:
+#   sudo journalctl -u iot-mqtt -f
+
+[Unit]
+Description=IoT MQTT Listener Service
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/html/iot-mqtt
+ExecStart=/usr/bin/php /var/www/html/iot-mqtt/mqtt/listener.php
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/www/html/iot-mqtt/logs/mqtt_listener.log
+StandardError=append:/var/www/html/iot-mqtt/logs/mqtt_listener_error.log
+
+# Limites de recursos
+LimitNOFILE=65535
+MemoryMax=256M
+
+# Segurança
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/html/iot-mqtt/logs
+
+[Install]
+WantedBy=multi-user.target
